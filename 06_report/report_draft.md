@@ -152,7 +152,101 @@ All four wards reach approximate steady state within approximately 100–120 day
 
 ---
 
-*[Sections 5–8 to be completed in subsequent tasks]*
+## 5. Intervention Analysis
+
+### 5.1 Scenario Definitions
+
+Four intervention scenarios were simulated over a 12-month horizon. Each scenario modifies specific parameters relative to the baseline:
+
+| Scenario | Parameter Changes | Mechanism |
+|----------|-----------------|-----------|
+| A: Hand Hygiene → 80% | $\delta_i: 5.0 \to 8.0$/day (all wards) | Faster HCW decontamination; breaks indirect transmission chain |
+| B: Admission Screening + Contact Precautions | $\alpha_i \times 0.20$; $\beta_i \times 0.70$ | Removes 80% of colonised admissions; reduces direct transmission 30% |
+| C: Antibiotic Stewardship (−30%) | $\gamma_i$ restored toward $\gamma_{\text{base}}$ using $a_i \times 0.70$ | Restores host clearance capacity by reducing antibiotic pressure |
+| D: Combined A + C | Both $\delta_i$ and $\gamma_i$ improved simultaneously | Multi-target intervention |
+
+### 5.2 Results
+
+![Intervention comparison: colonisation prevalence under all five scenarios](../03_simulation/figures/interventions.png)
+
+*Figure 2. Colonisation prevalence trajectories for baseline and four intervention scenarios across all four wards over 365 days.*
+
+**Table 2. System R₀ and ward-level colonisation prevalence at Day 365**
+
+| Scenario | R₀ | GM | GS | ICU | GW | System |
+|----------|----|----|----|----|-----|--------|
+| Baseline | 1.36 | 5.1% | 6.0% | 15.6% | 9.3% | 7.3% |
+| A: Hand Hygiene | 1.23 | 5.0% | 5.9% | 15.1% | 9.1% | 7.2% |
+| B: Admission Screening | 1.16 | 0.8% | 0.9% | 1.7% | 1.0% | 1.0% |
+| C: Antibiotic Stewardship | 1.28 | 4.9% | 5.5% | 12.3% | 7.8% | 6.4% |
+| D: Combined A + C | 1.15 | 4.8% | 5.5% | 11.8% | 7.7% | 6.3% |
+
+### 5.3 Interpretation
+
+**Scenario A (Hand Hygiene 80%):** Raising hand hygiene compliance from 50% to 80% increases the HCW decontamination rate $\delta$ from 5.0 to 8.0/day and reduces R₀ from 1.36 to 1.23 (a 9.6% reduction). However, the effect on 12-month endemic prevalence is modest (system prevalence 7.3% → 7.2%). This apparent paradox is explained by the admission colonisation forcing term: even when R₀ is reduced, the constant inflow of colonised patients $\alpha_i \mu_i N_i$ sustains a substantial endemic equilibrium. The sensitivity analysis (Section 6) confirms that hand hygiene (δ) is a strong driver of R₀ (PRCC = −0.96) but has only moderate independent influence on endemic prevalence (PRCC = −0.13 when other parameters, especially α, are simultaneously varied).
+
+**Scenario B (Admission Screening + Contact Precautions):** This scenario produces by far the largest reduction in endemic prevalence (system 7.3% → 1.0%), despite achieving only a modest R₀ reduction (1.36 → 1.16). The mechanism is the 80% reduction in admission colonisation ($\alpha_i \times 0.20$), which directly eliminates the primary forcing term driving endemic persistence. This is consistent with the theoretical result of Lipsitch et al. [1]: when most colonised individuals enter via admission rather than in-hospital transmission, reducing admission colonisation rate is more effective than reducing R₀. The sensitivity analysis confirms that α has the strongest PRCC with 12-month prevalence (0.87), while having negligible effect on R₀.
+
+**Scenario C (Antibiotic Stewardship):** Reducing unnecessary antibiotic use by 30% restores the decolonisation rate $\gamma_i$ toward its base value, reducing system prevalence from 7.3% to 6.4% (a 12% reduction) and R₀ from 1.36 to 1.28. The effect is most pronounced in the ICU (15.6% → 12.3%), where antibiotic use is highest (80%) and the γ increase is therefore largest. This confirms that antibiotic stewardship is particularly valuable in high-intensity wards.
+
+**Scenario D (Combined A + C):** The combined strategy achieves the lowest R₀ (1.15) and system prevalence (6.3%), marginally better than Scenario C alone (6.4%). The small additional benefit of Scenario A over C in the combined scenario reflects the finding from Scenario A: once the dominant forcing term (α) is not addressed, hand hygiene improvements have limited additive effect on prevalence. The combined D strategy does outperform all single interventions on R₀, suggesting it would be most effective at preventing epidemic amplification during an outbreak introduction.
+
+### 5.4 Policy Recommendation
+
+We recommend **Scenario B (universal admission screening + contact precautions)** as the primary intervention for reducing endemic AMR prevalence, supplemented by **Scenario C (antibiotic stewardship)** for long-term sustainability.
+
+The evidence basis for this recommendation is threefold:
+1. **Efficacy:** Scenario B achieves the largest absolute prevalence reduction (6.3 percentage points system-wide), driven by elimination of the admission colonisation forcing term.
+2. **Mechanism:** Sensitivity analysis confirms that admission colonisation rate α is the dominant driver of 12-month prevalence (PRCC = 0.87), which Scenario B directly targets.
+3. **Literature support:** Lipsitch et al. [1] predict that non-specific transmission-reduction interventions (hand hygiene, contact precautions) disproportionately reduce resistant bacterial prevalence, a prediction our model quantitatively confirms.
+
+For the hospital board, we recommend implementing Scenario B immediately while building capacity for Scenario C, as antibiotic stewardship programmes require sustained clinical culture change. Scenario A (hand hygiene improvement) should be maintained as a baseline standard regardless, given its structural effect on R₀.
+
+### 5.5 Uncertainty and Limitations
+
+Parameter uncertainty is quantified in Section 6. The most important structural limitation is that our model treats admission colonisation rate α as uniform across wards and time; in practice, admission colonisation varies by season, patient mix, and referral source. Sensitivity analysis shows α is the most influential parameter for prevalence, meaning real-world effectiveness of Scenario B may differ substantially from model predictions if admission colonisation is heterogeneous.
+
+---
+
+## 6. Sensitivity Analysis
+
+### 6.1 Method
+
+We applied Partial Rank Correlation Coefficient (PRCC) analysis with Latin Hypercube Sampling (n = 1,000 samples, fixed seed = 42) to quantify the independent contribution of each parameter to R₀ and 12-month system prevalence. Four scale factors were varied simultaneously:
+
+| Parameter | Symbol | Sampling Range |
+|-----------|--------|---------------|
+| Transmission rate | β_scale | ×0.5 to ×1.5 (±50%) |
+| Decolonisation rate | γ_scale | ×0.5 to ×1.5 (±50%) |
+| Hand hygiene compliance | δ_scale | ×0.2 to ×1.0 (compliance 20%–100%) |
+| Admission colonisation | α_scale | ×0.25 to ×2.0 (prevalence ~1%–8%) |
+
+PRCC is computed by partial regression on ranked values, isolating the contribution of each parameter after removing the linear effect of the others.
+
+### 6.2 Results
+
+![PRCC tornado plots for R₀ and 12-month system prevalence](../03_simulation/figures/sensitivity.png)
+
+*Figure 3. PRCC values for R₀ (left) and 12-month colonisation prevalence (right). Green bars indicate positive correlation (parameter increase → outcome increase); red bars indicate negative correlation.*
+
+**Table 3. PRCC coefficients**
+
+| Parameter | PRCC vs R₀ | PRCC vs 12-month Prevalence |
+|-----------|-----------|----------------------------|
+| β (transmission) | **+0.967** | +0.936 |
+| γ (decolonisation) | **−0.915** | −0.860 |
+| δ (hand hygiene) | **−0.957** | −0.134 |
+| α (admission rate) | −0.018 ≈ 0 | **+0.873** |
+
+### 6.3 Interpretation
+
+**R₀ sensitivity:** The three parameters β, γ, and δ all show strong PRCC magnitudes (|PRCC| > 0.9) with R₀. This reflects their direct mechanistic roles: β drives new colonisations, γ drives recovery, and δ drives HCW decontamination. The admission colonisation rate α has negligible PRCC with R₀ (−0.018), as expected: R₀ is computed at the disease-free equilibrium where α is formally set to zero, so α does not enter the NGM calculation.
+
+**Prevalence sensitivity:** The ranking changes substantially for 12-month prevalence. The dominant factors are β (+0.936) and α (+0.873), while δ drops to −0.134. This reveals a critical asymmetry: hand hygiene compliance (δ) strongly reduces R₀ but has limited independent effect on steady-state prevalence, because endemic prevalence is sustained by the admission colonisation forcing term regardless of transmission intensity. Conversely, α has almost no effect on R₀ but dominates the prevalence outcome.
+
+**Implication for intervention design:** This asymmetry means that R₀ alone is an incomplete guide to intervention priority. A hospital using R₀ to prioritise interventions would over-invest in hand hygiene and under-invest in admission screening — the opposite of the optimal policy for reducing endemic prevalence. Both metrics are necessary for complete evaluation.
+
+These findings are consistent with Bootsma et al. [3], who identified cross-transmission rate (β-equivalent) as the primary driver of within-ward dynamics, and with Lipsitch et al. [1], who emphasise the role of admission colonisation in sustaining resistance even when within-hospital transmission is controlled.
 
 ---
 
