@@ -320,6 +320,28 @@ If applied to a *newly introduced* resistant strain (one colonised patient arriv
 
 ---
 
+## 8. Conclusion
+
+This study developed and analysed a four-ward coupled compartmental model of antimicrobial resistance transmission in a hospital network, combining a Susceptible–Colonised–Susceptible patient framework with explicit healthcare worker contamination dynamics.
+
+**Key findings:**
+
+1. **Endemic persistence is established:** The system-level basic reproduction number R₀ = 1.36 exceeds the persistence threshold, confirming that AMR will remain endemic under baseline conditions. Critically, R₀ exceeds 1 only because of inter-ward coupling and HCW-mediated transmission — isolated single wards would not sustain endemic resistance, demonstrating the importance of network-level analysis.
+
+2. **Admission colonisation is the dominant driver of endemic prevalence:** Sensitivity analysis reveals that the admission colonisation rate α has the strongest PRCC with 12-month prevalence (0.87) while having negligible effect on R₀. This asymmetry means that R₀ alone is an incomplete guide to intervention priority.
+
+3. **Scenario B (admission screening) achieves the largest prevalence reduction:** Reducing admission colonisation by 80%, combined with 30% reduction in direct transmission, reduces system-wide prevalence from 7.3% to 1.0%. This dramatically outperforms interventions targeting only in-hospital transmission (Scenarios A and C).
+
+4. **Combined Scenario D achieves the lowest R₀:** The combined hand hygiene + antibiotic stewardship strategy (R₀ = 1.15) best reduces the risk of epidemic amplification during outbreak events, even though its effect on endemic prevalence is modest relative to Scenario B.
+
+**Policy recommendation to the hospital board:** Implement universal admission screening and contact precautions (Scenario B) as the primary intervention for reducing endemic AMR burden, supplemented by antibiotic stewardship (Scenario C) for sustained management of antibiotic selection pressure. Hand hygiene improvement (Scenario A) should be maintained as a baseline standard given its structural effect on R₀ and its low implementation cost. The combined A+C strategy (Scenario D) is recommended for periods of elevated outbreak risk.
+
+**Limitations:** The most significant are the homogeneous mixing assumption, deterministic formulation for small wards (especially ICU with N=15), and time-invariant parameters. These are discussed fully in Section 7. The model is appropriate for steady-state endemic planning and should not be applied to acute outbreak scenarios.
+
+**Future work:** Priority refinements include stochastic simulation for the ICU ward, time-varying seasonal parameters, and extension to a two-strain model to evaluate antibiotic cycling strategies on a multi-year horizon.
+
+---
+
 ## References
 
 1. Lipsitch M, Bergstrom CT, Levin BR. The epidemiology of antibiotic resistance in hospitals: paradoxes and prescriptions. *PNAS* 2000;97:1938–1943.
