@@ -250,6 +250,76 @@ These findings are consistent with Bootsma et al. [3], who identified cross-tran
 
 ---
 
+## 7. Critical Evaluation
+
+### 7.1 Three Most Significant Model Limitations
+
+#### Limitation 1: Homogeneous Mixing Within Wards
+
+Our model assumes that every patient in ward $i$ is equally likely to contact any healthcare worker in ward $i$, and that every HCW has equal probability of contacting any patient. In reality, transmission is spatially structured by bed proximity, nursing cohort assignments, procedural schedules, and patient mobility. A patient in the bed adjacent to a colonised patient, served by the same nurse, faces radically higher exposure than a patient at the far end of the ward cared for by a different team.
+
+*Effect on predictions:* Homogeneous mixing overestimates transmission speed at low prevalence (when colonised individuals are sparse within the ward, mass-action contact overestimates actual encounters) and underestimates spatial clustering effects at high prevalence. As a consequence, our model likely overestimates the effectiveness of ward-level isolation alone, since true heterogeneous mixing means that contact precautions need only interrupt a locally clustered contact network. Conversely, we cannot model bed-placement cohorting — grouping colonised patients in one section of the ward — which our framework cannot represent at all.
+
+*What would address it:* A network-structured model with an explicit HCW–patient contact graph, parameterised from bed-map data and nursing roster information, would capture spatial heterogeneity. Electronic patient tracking systems and staff localisation data (increasingly available in NHS hospitals through sensor networks) could provide this parameterisation. The Bootsma et al. algorithm [3] represents a step in this direction, using individual-level surveillance to estimate transmission rates without requiring full contact-network data.
+
+---
+
+#### Limitation 2: Deterministic ODE for Wards with Small Patient Populations
+
+Ordinary differential equations treat state variables as continuous quantities. For the ICU with $N_{ICU} = 15$ beds, 10% colonisation corresponds to 1.5 patients — a quantity with no physical meaning. At low prevalence in small wards, stochastic fluctuations can cause extinction of the colonisation chain even when $R_0 > 1$ — the "stochastic fade-out" phenomenon well-documented in epidemic theory [5].
+
+*Effect on predictions:* Our deterministic model predicts that the ICU will always converge to its endemic equilibrium (15.6%) given $R_0 > 1$, with no possibility of spontaneous clearance. A stochastic Gillespie simulation would show that with $N = 15$ patients, there is a non-negligible probability of stochastic extinction even at $R_0 = 1.36$. The probability of extinction from a small initial infected population scales approximately as $(1/R_0)^I$ — for the ICU with $I = 1$ or 2 initial colonised patients, this implies substantial chance of a self-limiting outbreak. We therefore likely *overestimate* the inevitability of endemic colonisation in the ICU.
+
+*What would address it:* A Gillespie exact stochastic simulation or $\tau$-leaping approximation for the ICU, coupled to deterministic equations for larger wards (GM, GS), would provide a hybrid model capturing stochastic effects where they matter most. This hybrid approach is computationally tractable for $N = 15$ and would produce probability distributions over outcomes rather than point estimates — a substantially more informative basis for decision-making in small, high-acuity wards.
+
+---
+
+#### Limitation 3: Time-Invariant Transmission Parameters
+
+All parameters in our model ($\beta_i$, $\gamma_i$, $\delta_i$, $\alpha_i$) are assumed constant throughout the 12-month simulation. In reality: (i) winter months bring higher bed occupancy, greater HCW workload, and reduced compliance with infection control protocols — all increasing effective $\beta$; (ii) when an MRSA cluster is detected, clinical alerts trigger enhanced cleaning and hand hygiene audits, temporarily raising $\delta$ and lowering $\beta$; (iii) over 12 months, clonal expansion of more transmissible lineages can effectively increase $\beta$ as fitter variants replace less fit ones.
+
+*Effect on predictions:* The model underestimates peak colonisation during winter-associated surge periods and overestimates steady-state persistence during post-outbreak periods when enhanced behavioural responses are active. Most critically, our intervention simulations apply a permanent step-change to parameters (e.g., $\delta$ raised uniformly for 365 days), whereas real-world compliance improvements typically decay over time without reinforcement — a pattern documented in hand hygiene intervention studies where initial 40–50% compliance gains declined to 20% at 24 months.
+
+*What would address it:* Time-varying parameters driven by empirical data (seasonal admission records, quarterly compliance audit data) or coupled to a behavioural sub-model (compliance as a declining function of time since last training) would substantially improve realism. The required data are routinely collected in NHS hospitals.
+
+---
+
+### 7.2 Two Alternative Modelling Approaches Considered and Rejected
+
+#### Alternative 1: Individual-Based Model (IBM)
+
+An IBM would represent each patient and HCW as an autonomous agent with individual attributes — immune status, antibiotic history, room location, assigned nurse. Transmission events occur through explicit contact events rather than mass-action mixing. D'Agata et al. [4] implement exactly this approach as a validation companion to their ODE model.
+
+*Potential advantages:* Higher biological fidelity; captures patient heterogeneity; naturally handles stochasticity in small wards; can model cohorting and individual isolation.
+
+*Why rejected:* Three practical limitations made this approach inappropriate. First, an IBM requires contact-network data — bed maps, nursing rosters, patient movement logs — unavailable in the problem specification. Second, computational cost prohibits the sensitivity analysis central to our objectives: 1,000 PRCC samples would require hours of computation per parameter set. Third, IBMs are less analytically transparent: the NGM derivation of R₀ is impossible for an IBM, and the mechanistic interpretation of intervention effects is opaque. For population-level policy evaluation, a compartmental ODE model offers a better trade-off between biological adequacy and analytical tractability.
+
+#### Alternative 2: Two-Strain Model (Susceptible + Sensitive + Resistant)
+
+A two-strain ODE would track both antibiotic-susceptible and antibiotic-resistant organisms simultaneously, with competitive exclusion dynamics and antibiotic-driven selection. Webb et al. [2] develop exactly this framework at the bacterial level.
+
+*Potential advantages:* Models de novo resistance emergence; captures competitive dynamics and fitness cost of resistance; allows antibiotic cycling strategy evaluation.
+
+*Why rejected:* The problem specifies an established resistant organism — we model spread of already-present AMR, not its emergence. De novo resistance emergence operates on timescales of years, far beyond the 12-month intervention horizon. Adding a susceptible-strain compartment doubles state variables from 12 to 20 and introduces additional parameters (fitness cost, horizontal gene transfer rates) with high uncertainty. For 12-month policy evaluation, the single-strain model captures essential dynamics without these complications. A two-strain model would be appropriate for the distinct question: "Given zero current resistance, how quickly does resistance emerge under different antibiotic policies?"
+
+---
+
+### 7.3 One Scenario Where the Model Gives Misleading Predictions
+
+#### Misleading Scenario: Evaluating Intervention Effectiveness During an Active Outbreak Introduction
+
+Our model is calibrated to endemic steady-state dynamics — the long-run behaviour when AMR has been chronically circulating. Initial conditions (5–10% colonisation per ward) are set near the expected endemic equilibrium, and parameters reflect the average transmission environment of a hospital with entrenched AMR colonisation.
+
+If applied to a *newly introduced* resistant strain (one colonised patient arriving in an otherwise AMR-free hospital), the model generates incorrect quantitative predictions for two reasons.
+
+**Non-equilibrium transient dynamics.** Our model initialised at 5–10% colonisation misses the early exponential phase entirely, predicting immediate convergence to endemic levels rather than a detectable outbreak trajectory from a single introduction. The quantitative time course of spread during exponential growth depends sensitively on the initial number of colonised individuals — information the model's endemic-state initialisation discards.
+
+**Outbreak-responsive management.** In clinical practice, a newly detected AMR cluster triggers immediate responses: enhanced surveillance, patient cohorting, temporary transfer restrictions, and emergency hand hygiene campaigns. The inter-ward transfer rates $T_{ij}$ — set from long-run statistics — are typically zeroed during an active outbreak as clinical teams impose transfer moratoriums. Our static-parameter model cannot represent this adaptive response, and would therefore systematically overestimate spread to other wards.
+
+*Practical implication:* The model should be explicitly labelled as a **steady-state policy planning tool** for endemic AMR management. It answers the question: "Given entrenched AMR colonisation, which sustained intervention programme reduces endemic prevalence most?" It does not answer: "What will happen if one colonised patient arrives tomorrow?" — a question requiring stochastic outbreak modelling with time-varying, response-adaptive parameters.
+
+---
+
 ## References
 
 1. Lipsitch M, Bergstrom CT, Levin BR. The epidemiology of antibiotic resistance in hospitals: paradoxes and prescriptions. *PNAS* 2000;97:1938–1943.
