@@ -1,5 +1,7 @@
 # Modelling Antimicrobial Resistance Dynamics in a Hospital Network
 
+**Authors:** Yuchi Dai · Yibei Jiang · Xinyu Chen · Tongda Deng  
+**Affiliation:** University of Nottingham Ningbo China  
 **Nottingham Mathematical Modelling Competition 2026**  
 **Submission deadline:** 17 May 2026, 23:59 GMT+8
 
