@@ -105,7 +105,7 @@ def compute_R0(params):
 
     F[patient_indices, patient_indices] = params["beta"]
     F[patient_indices, hcw_indices] = params["lambda_hcw"] * params["N"]
-    F[hcw_indices, patient_indices] = params["eta"]
+    F[hcw_indices, patient_indices] = params["eta"] / params["N"]  # H_i is a fraction; linearise dH_i/dt at DFE gives eta_i/N_i per colonised patient
 
     V[patient_indices, patient_indices] = (
         params["gamma"] + params["mu"] + np.sum(params["T"], axis=1)

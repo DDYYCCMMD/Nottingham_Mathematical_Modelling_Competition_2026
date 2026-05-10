@@ -37,12 +37,12 @@ dH_i/dt = η_i(C_i/N_i)(1−H_i) − δ_i H_i
 Three justification bullets: "SIS not SIR: no immunity from colonisation" | "HCW compartment: 21-29% of ICU transmission via HCW hands" | "Antibiotic pressure modulates β and γ per ward"
 
 Slide 4 – R₀ Analysis
-Title: Basic Reproduction Number R₀ = 1.36
-Large centered number: R₀ = 1.36
+Title: Basic Reproduction Number R₀ = 0.96
+Large centered number: R₀ = 0.96
 Formula box: R₀ = ρ(F·V⁻¹) where ρ = spectral radius
 Two key insights:
-"R₀ > 1 → endemic persistence confirmed"
-"Single ICU in isolation: R₀ ≈ 0.98 < 1 — inter-ward coupling drives the system above threshold"
+"R₀ < 1 → in-hospital transmission alone cannot sustain AMR"
+"Endemic persistence is driven by admission colonisation forcing (α·μ·N) — eliminating this is the necessary condition for eradication (Scenario B)"
 
 Slide 5 – Baseline Simulation
 Title: 12-Month Colonisation Dynamics
@@ -60,11 +60,11 @@ Title: Which Intervention Works Best?
 Insert image placeholder labeled "Figure 2: interventions.png"
 Comparison table 5 rows:
 Scenario | R₀ | System Prevalence
-Baseline | 1.36 | 7.3%
-A: Hand Hygiene 80% | 1.23 | 7.2%
-B: Admission Screening | 1.16 | 1.0% ← HIGHLIGHT THIS ROW in green
-C: Antibiotic Stewardship | 1.28 | 6.4%
-D: Combined A+C | 1.15 | 6.3%
+Baseline | 0.96 | 7.3%
+A: Hand Hygiene 80% | 0.95 | 7.2%
+B: Admission Screening | 0.70 | 1.0% ← HIGHLIGHT THIS ROW in green
+C: Antibiotic Stewardship | 0.90 | 6.4%
+D: Combined A+C | 0.88 | 6.3%
 Callout: "Scenario B: 86% prevalence reduction — eliminates the admission colonisation forcing term"
 
 Slide 7 – Sensitivity Analysis
@@ -135,12 +135,12 @@ Style: white background, color-coded compartments, clean sans-serif font.
 ```
 Design a results announcement slide for a mathematical presentation.
 Title: "Basic Reproduction Number"
-Center: a very large bold number "R₀ = 1.36" in navy blue, font size equivalent to 120pt
+Center: a very large bold number "R₀ = 0.96" in navy blue, font size equivalent to 120pt
 Below it: the formula "R₀ = ρ(F · V⁻¹)" in a light grey formula box
 Two insight bullet points:
-• "R₀ > 1 → endemic persistence confirmed"  
-• "Isolated ICU: R₀ ≈ 0.98 — network coupling drives system above threshold"
-Visual accent: a subtle upward arrow or threshold line graphic showing 1.0 as critical boundary.
+• "R₀ < 1 → in-hospital transmission alone cannot sustain AMR"  
+• "Endemic persistence driven by admission colonisation forcing (α·μ·N) — Scenario B eliminates this"
+Visual accent: a subtle threshold line graphic showing 1.0, with R₀ = 0.96 marked below it.
 Style: minimalist white slide, single focal point on the number, academic typography.
 ```
 
@@ -233,7 +233,7 @@ Three stacked action items with priority color coding:
 
 🟢 SUSTAINED BASELINE (green left border):
 "Maintain 80% hand hygiene compliance"
-"Result: R₀ 1.36 → 1.23, reduces outbreak amplification risk"
+"Result: R₀ 0.96 → 0.95, maintains low transmission baseline"
 
 Bottom takeaway box (navy background, white text):
 "R₀ and endemic prevalence require different interventions — target both metrics"

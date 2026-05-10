@@ -52,15 +52,15 @@ dH_i/dt = η_i(C_i/N_i)(1−H_i) − δ_i H_i
 
 ### Slide 4 — R₀ Analysis (60 seconds)
 
-**Title:** Basic Reproduction Number R₀ = 1.36
+**Title:** Basic Reproduction Number R₀ = 0.96
 
 **Visuals:**
-- Box: "R₀ = ρ(F·V⁻¹) = 1.36"
+- Box: "R₀ = ρ(F·V⁻¹) = 0.96"
 - Small 2×2 block structure of K matrix (illustrative, not full 8×8)
 - Two bullet interpretations
 
 **Script:**
-> "We derive R₀ using the Next Generation Matrix method. The infected compartments — four colonised patient pools and four HCW contamination pools — form an 8×8 system. The spectral radius of the next generation matrix gives R₀ = 1.36. Since R₀ exceeds 1, the disease-free equilibrium is unstable and AMR will persist endemically. Notably, isolated single wards would not sustain resistance — it is the inter-ward coupling and HCW transmission that pushes the system above threshold."
+> "We derive R₀ using the Next Generation Matrix method. The infected compartments — four colonised patient pools and four HCW contamination pools — form an 8×8 system. The spectral radius of the next generation matrix gives R₀ = 0.96 — below 1. This means in-hospital transmission alone cannot sustain endemic AMR. The disease-free equilibrium is stable in the absence of external forcing. However, AMR persists endemically because of the constant admission colonisation forcing term: every day, approximately 4% of admissions carry resistant organisms, continuously seeding each ward regardless of R₀. Complete eradication therefore requires both R₀ < 1 — already satisfied — and eliminating admission colonisation, which is exactly what Scenario B achieves."
 
 ---
 
@@ -87,7 +87,7 @@ dH_i/dt = η_i(C_i/N_i)(1−H_i) − δ_i H_i
 - Highlight row: Scenario B (most dramatic prevalence reduction)
 
 **Script:**
-> "We tested four interventions. Scenario A — raising hand hygiene compliance to 80% — reduces R₀ from 1.36 to 1.23 but has limited impact on endemic prevalence. Why? Because endemic prevalence is maintained by a constant stream of colonised admissions, which hand hygiene alone cannot address. Scenario B — universal admission screening plus contact precautions — produces the most dramatic result: system prevalence drops from 7.3% to just 1.0%, by eliminating 80% of admission colonisation. Our sensitivity analysis confirms that admission colonisation rate is the strongest driver of endemic prevalence — with PRCC 0.87. Scenario C, antibiotic stewardship, reduces system prevalence by 12%, most effectively in the ICU. The combined Scenario D achieves the lowest R₀ at 1.15."
+> "We tested four interventions. Scenario A — raising hand hygiene compliance to 80% — reduces R₀ from 0.96 to 0.95 but has negligible impact on endemic prevalence. Why? Because endemic prevalence is maintained by a constant stream of colonised admissions, which hand hygiene alone cannot address. Scenario B — universal admission screening plus contact precautions — produces the most dramatic result: system prevalence drops from 7.3% to just 1.0%, with R₀ falling to 0.70. This directly eliminates the admission colonisation forcing term — the primary driver of endemic persistence. Scenario C, antibiotic stewardship, reduces system prevalence by 12%, most effectively in the ICU. The combined Scenario D achieves the lowest R₀ at 0.88, but its system prevalence of 6.3% is far higher than Scenario B because it does not address admission colonisation."
 
 ---
 

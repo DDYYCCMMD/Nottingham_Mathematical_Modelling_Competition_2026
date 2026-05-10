@@ -1,0 +1,46 @@
+# ── Python ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# ── LaTeX build artefacts ────────────────────────────────────────────────
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+
+# Keep the compiled PDF (it is the submission deliverable)
+!06_report/report.pdf
+
+# ── macOS ────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ── CCB agent runtime (internal tooling, not submission material) ────────
+.ccb/
+
+# ── Claude Code local settings ───────────────────────────────────────────
+.claude/
+
+# ── Duplicate figure copies created by Codex (figures live in 03_simulation/figures/) ──
+04_intervention/03_simulation/
+05_sensitivity/03_simulation/

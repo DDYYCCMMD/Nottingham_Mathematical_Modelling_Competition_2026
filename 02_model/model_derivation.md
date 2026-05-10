@@ -132,11 +132,13 @@ $$F_{i,i} = \beta_i \quad (i = 0,1,2,3)$$
 $$F_{i,\,4+i} = \lambda_i N_i \quad (i = 0,1,2,3)$$
 
 **HCW contamination from colonised patients (C → H):**
-$$F_{4+i,\,i} = \eta_i \quad (i = 0,1,2,3)$$
+
+Since $H_i$ is a *dimensionless fraction*, linearising $dH_i/dt = \eta_i (C_i/N_i)(1-H_i)$ at the DFE ($C_i=0$, $H_i=0$) with respect to $C_i$ gives:
+$$F_{4+i,\,i} = \frac{\eta_i}{N_i} \quad (i = 0,1,2,3)$$
 
 All other entries of F are zero.
 
-$$\mathbf{F} = \begin{pmatrix} \mathrm{diag}(\beta_i) & \mathrm{diag}(\lambda_i N_i) \\ \mathrm{diag}(\eta_i) & \mathbf{0} \end{pmatrix}$$
+$$\mathbf{F} = \begin{pmatrix} \mathrm{diag}(\beta_i) & \mathrm{diag}(\lambda_i N_i) \\ \mathrm{diag}(\eta_i/N_i) & \mathbf{0} \end{pmatrix}$$
 
 ### 5.5 Transition Matrix V (8×8)
 
@@ -159,7 +161,7 @@ where $\sigma_i = \sum_{j \neq i} T_{ij}$ is the total transfer-out rate from wa
 Since V is block-diagonal:
 $$\mathbf{V}^{-1} = \begin{pmatrix} \mathrm{diag}(1/(\gamma_i+\mu_i+\sigma_i)) & \mathbf{0} \\ \mathbf{0} & \mathrm{diag}(1/\delta_i) \end{pmatrix}$$
 
-$$\mathbf{K} = \mathbf{F} \cdot \mathbf{V}^{-1} = \begin{pmatrix} \mathrm{diag}\!\left(\frac{\beta_i}{\gamma_i+\mu_i+\sigma_i}\right) & \mathrm{diag}\!\left(\frac{\lambda_i N_i}{\delta_i}\right) \\ \mathrm{diag}\!\left(\frac{\eta_i}{\gamma_i+\mu_i+\sigma_i}\right) & \mathbf{0} \end{pmatrix}$$
+$$\mathbf{K} = \mathbf{F} \cdot \mathbf{V}^{-1} = \begin{pmatrix} \mathrm{diag}\!\left(\frac{\beta_i}{\gamma_i+\mu_i+\sigma_i}\right) & \mathrm{diag}\!\left(\frac{\lambda_i N_i}{\delta_i}\right) \\ \mathrm{diag}\!\left(\frac{\eta_i}{N_i(\gamma_i+\mu_i+\sigma_i)}\right) & \mathbf{0} \end{pmatrix}$$
 
 **R₀ = ρ(K)** — the largest eigenvalue (spectral radius) of the 8×8 matrix K.
 
@@ -168,10 +170,10 @@ For a single isolated ward with no transfers ($\sigma_i = 0$) and no HCW:
 $$R_0^{\text{simple}} = \frac{\beta_i}{\gamma_i + \mu_i}$$
 
 With HCW compartment (still no transfers), the 2×2 sub-block for ward $i$ is:
-$$K_i = \begin{pmatrix} \frac{\beta_i}{\gamma_i+\mu_i} & \frac{\lambda_i N_i}{\delta_i} \\ \frac{\eta_i}{\gamma_i+\mu_i} & 0 \end{pmatrix}$$
+$$K_i = \begin{pmatrix} \frac{\beta_i}{\gamma_i+\mu_i} & \frac{\lambda_i N_i}{\delta_i} \\ \frac{\eta_i}{N_i(\gamma_i+\mu_i)} & 0 \end{pmatrix}$$
 
 The spectral radius of this 2×2 block:
-$$R_0^{\text{ward}} = \frac{\beta_i}{2(\gamma_i+\mu_i)} + \sqrt{\left(\frac{\beta_i}{2(\gamma_i+\mu_i)}\right)^2 + \frac{\lambda_i N_i \eta_i}{\delta_i (\gamma_i+\mu_i)}}$$
+$$R_0^{\text{ward}} = \frac{\beta_i}{2(\gamma_i+\mu_i)} + \sqrt{\left(\frac{\beta_i}{2(\gamma_i+\mu_i)}\right)^2 + \frac{\lambda_i \eta_i}{\delta_i (\gamma_i+\mu_i)}}$$
 
 For the full 4-ward system, R₀ = ρ(K) must be computed numerically (dominant eigenvalue of the 8×8 matrix).
 

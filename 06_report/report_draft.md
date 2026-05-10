@@ -7,7 +7,7 @@
 
 ## Abstract
 
-We develop a four-ward coupled compartmental model of antimicrobial resistance (AMR) transmission in a hospital network comprising General Medicine (GM), General Surgery (GS), Intensive Care Unit (ICU), and Geriatric Ward (GW). Each ward is described by a Susceptible–Colonised–Susceptible (SIS) system augmented with a healthcare worker (HCW) contamination compartment. The basic reproduction number R₀ = 1.36 is derived analytically using the Next Generation Matrix method and confirms endemic persistence under baseline conditions. Baseline simulation yields 12-month steady-state colonisation prevalence of 5.1% (GM), 6.0% (GS), 15.6% (ICU), and 9.3% (GW), consistent with published estimates. Four intervention scenarios are evaluated over a 12-month horizon: raising hand hygiene compliance to 80% (Scenario A), universal admission screening with contact precautions (Scenario B), 30% antibiotic stewardship (Scenario C), and a combined strategy (Scenario D). We recommend Scenario D as the evidence-based primary intervention, achieving the largest system-wide prevalence reduction. Sensitivity analysis identifies the direct transmission rate β and hand hygiene decontamination rate δ as the parameters to which R₀ is most sensitive.
+We develop a four-ward coupled compartmental model of antimicrobial resistance (AMR) transmission in a hospital network comprising General Medicine (GM), General Surgery (GS), Intensive Care Unit (ICU), and Geriatric Ward (GW). Each ward is described by a Susceptible–Colonised–Susceptible (SIS) system augmented with a healthcare worker (HCW) contamination compartment. The basic reproduction number R₀ = 0.96 is derived analytically using the Next Generation Matrix method. R₀ < 1 indicates that intrinsic transmission alone cannot sustain endemic AMR; instead, endemic persistence is driven by the constant admission colonisation forcing term (α·μ·N), which continuously seeds colonised patients regardless of in-hospital transmission. Baseline simulation yields 12-month steady-state colonisation prevalence of 5.1% (GM), 6.0% (GS), 15.6% (ICU), and 9.3% (GW), consistent with published estimates. Four intervention scenarios are evaluated over a 12-month horizon: raising hand hygiene compliance to 80% (Scenario A), universal admission screening with contact precautions (Scenario B), 30% antibiotic stewardship (Scenario C), and a combined strategy (Scenario D). We recommend Scenario B as the primary intervention, achieving the largest system-wide prevalence reduction (7.3% → 1.0%) by directly eliminating the admission colonisation forcing term. Sensitivity analysis confirms that admission colonisation rate α is the dominant driver of endemic prevalence (PRCC = +0.87) while having negligible effect on R₀.
 
 ---
 
@@ -99,25 +99,27 @@ For R₀ calculation, we set $\alpha_i = 0$ (no admission colonisation) to admit
 
 The infected compartments are ordered as $\mathbf{x} = (C_0, C_1, C_2, C_3, H_0, H_1, H_2, H_3)$ (8-dimensional). At the DFE:
 
-$$\mathbf{F} = \begin{pmatrix} \mathrm{diag}(\beta_i) & \mathrm{diag}(\lambda_i N_i) \\ \mathrm{diag}(\eta_i) & \mathbf{0}_{4 \times 4} \end{pmatrix}, \qquad \mathbf{V} = \begin{pmatrix} \mathrm{diag}(\gamma_i + \mu_i + \sigma_i) & \mathbf{0} \\ \mathbf{0} & \mathrm{diag}(\delta_i) \end{pmatrix}$$
+$$\mathbf{F} = \begin{pmatrix} \mathrm{diag}(\beta_i) & \mathrm{diag}(\lambda_i N_i) \\ \mathrm{diag}(\eta_i/N_i) & \mathbf{0}_{4 \times 4} \end{pmatrix}, \qquad \mathbf{V} = \begin{pmatrix} \mathrm{diag}(\gamma_i + \mu_i + \sigma_i) & \mathbf{0} \\ \mathbf{0} & \mathrm{diag}(\delta_i) \end{pmatrix}$$
 
-where $\sigma_i = \sum_{j \neq i} T_{ij}$ is the total transfer-out rate from ward $i$. The $F$ matrix captures: direct patient transmission ($\beta_i$, diagonal); HCW-to-patient transmission ($\lambda_i N_i$, off-diagonal block); and patient-to-HCW contamination ($\eta_i$, off-diagonal block). The $V$ matrix captures: patient decolonisation and discharge ($\gamma_i + \mu_i + \sigma_i$, diagonal); and HCW decontamination ($\delta_i$, diagonal).
+where $\sigma_i = \sum_{j \neq i} T_{ij}$ is the total transfer-out rate from ward $i$. The $F$ matrix captures: direct patient transmission ($\beta_i$, diagonal); HCW-to-patient transmission ($\lambda_i N_i$, off-diagonal block); and patient-to-HCW contamination ($\eta_i/N_i$, off-diagonal block). The $\eta_i/N_i$ entry arises because $H_i$ is a dimensionless fraction: linearising $dH_i/dt = \eta_i (C_i/N_i)(1-H_i)$ at the DFE gives $\partial(\dot{H}_i)/\partial C_i = \eta_i/N_i$. The $V$ matrix captures: patient decolonisation and discharge ($\gamma_i + \mu_i + \sigma_i$, diagonal); and HCW decontamination ($\delta_i$, diagonal).
 
 ### 3.4 Result and Interpretation
 
 The spectral radius of $\mathbf{K} = \mathbf{F} \cdot \mathbf{V}^{-1}$ gives:
 
-$$\boxed{R_0 = 1.36}$$
+$$\boxed{R_0 = 0.9641}$$
 
-Since R₀ > 1, the disease-free equilibrium is **unstable**: any introduction of a colonised patient into this hospital will, on average, generate more than one secondary colonisation. The AMR organism is expected to persist endemically.
+Since R₀ < 1, the disease-free equilibrium is **locally asymptotically stable** in the absence of external forcing. Intrinsic in-hospital transmission alone cannot sustain endemic AMR — a single colonised patient introduction would, on average, generate fewer than one secondary colonisation, and the chain would extinguish.
 
-**Single-ward analytical formula (no HCW, no transfers):** For verification, the simplified single-ward formula from Lipsitch et al. [1] gives $R_0^{\text{ICU, simple}} = \beta_{ICU}/(\gamma_{ICU} + \mu_{ICU}) = 0.14/(0.06 + 0.083) = 0.98$. The full 4-ward system R₀ = 1.36 exceeds this, demonstrating that inter-ward coupling and HCW-mediated transmission are what drive the system above the persistence threshold — consistent with the finding of Bootsma et al. [3] that cross-transmission is critical to endemic persistence.
+**Why is AMR endemic despite R₀ < 1?** The admission colonisation term $\alpha_i \mu_i N_i$ acts as a constant external forcing function that continuously seeds colonised patients into each ward regardless of R₀. With $\alpha_i = 4\%$ and steady patient throughput, colonised admissions supply the endemic pool that in-hospital transmission alone would not sustain. This is the critical finding of Lipsitch et al. [1]: when the admission colonisation rate dominates, *targeting R₀ is insufficient* — reducing in-hospital transmission without controlling admission colonisation cannot eradicate endemic AMR. This directly explains why Scenario B (admission screening, which eliminates the α forcing term) achieves dramatically better prevalence reduction than Scenarios A or D (which only reduce transmission parameters).
+
+**Single-ward analytical formula (no HCW, no transfers):** For verification, the simplified single-ward formula from Lipsitch et al. [1] gives $R_0^{\text{ICU, simple}} = \beta_{ICU}/(\gamma_{ICU} + \mu_{ICU}) = 0.14/(0.06 + 0.083) = 0.98$, consistent with the full NGM result of 0.96 which includes the additional HCW-mediated feedback loop.
 
 **Stability theorem (Diekmann et al. [5]):**
-- R₀ < 1 → DFE locally asymptotically stable → resistance eliminated (in the absence of admission colonisation)
-- R₀ > 1 → DFE unstable → resistance persists at endemic equilibrium
+- R₀ < 1 → DFE locally asymptotically stable → resistance extinguished **if and only if** admission colonisation is also eliminated
+- R₀ ≥ 1 → DFE unstable → resistance persists at endemic equilibrium even without admission forcing
 
-**Note on admission colonisation:** The term $\alpha_i \mu_i N_i$ acts as a constant forcing function, making complete eradication impossible even if R₀ could be brought below 1 through in-hospital interventions alone. Eliminating endemic AMR requires both reducing R₀ below 1 and implementing admission screening ($\alpha_i \to 0$).
+**Key implication:** Complete eradication of endemic AMR requires *both* R₀ < 1 (satisfied under baseline) *and* eliminating admission colonisation ($\alpha_i \to 0$, achieved by Scenario B). Reducing R₀ further through hand hygiene or antibiotic stewardship is insufficient on its own.
 
 ---
 
@@ -175,21 +177,21 @@ Four intervention scenarios were simulated over a 12-month horizon. Each scenari
 
 | Scenario | R₀ | GM | GS | ICU | GW | System |
 |----------|----|----|----|----|-----|--------|
-| Baseline | 1.36 | 5.1% | 6.0% | 15.6% | 9.3% | 7.3% |
-| A: Hand Hygiene | 1.23 | 5.0% | 5.9% | 15.1% | 9.1% | 7.2% |
-| B: Admission Screening | 1.16 | 0.8% | 0.9% | 1.7% | 1.0% | 1.0% |
-| C: Antibiotic Stewardship | 1.28 | 4.9% | 5.5% | 12.3% | 7.8% | 6.4% |
-| D: Combined A + C | 1.15 | 4.8% | 5.5% | 11.8% | 7.7% | 6.3% |
+| Baseline | 0.96 | 5.1% | 6.0% | 15.6% | 9.3% | 7.3% |
+| A: Hand Hygiene | 0.95 | 5.0% | 5.9% | 15.1% | 9.1% | 7.2% |
+| B: Admission Screening | 0.70 | 0.8% | 0.9% | 1.7% | 1.0% | 1.0% |
+| C: Antibiotic Stewardship | 0.90 | 4.9% | 5.5% | 12.3% | 7.8% | 6.4% |
+| D: Combined A + C | 0.88 | 4.8% | 5.5% | 11.8% | 7.7% | 6.3% |
 
 ### 5.3 Interpretation
 
-**Scenario A (Hand Hygiene 80%):** Raising hand hygiene compliance from 50% to 80% increases the HCW decontamination rate $\delta$ from 5.0 to 8.0/day and reduces R₀ from 1.36 to 1.23 (a 9.6% reduction). However, the effect on 12-month endemic prevalence is modest (system prevalence 7.3% → 7.2%). This apparent paradox is explained by the admission colonisation forcing term: even when R₀ is reduced, the constant inflow of colonised patients $\alpha_i \mu_i N_i$ sustains a substantial endemic equilibrium. The sensitivity analysis (Section 6) confirms that hand hygiene (δ) is a strong driver of R₀ (PRCC = −0.96) but has only moderate independent influence on endemic prevalence (PRCC = −0.13 when other parameters, especially α, are simultaneously varied).
+**Scenario A (Hand Hygiene 80%):** Raising hand hygiene compliance from 50% to 80% increases the HCW decontamination rate $\delta$ from 5.0 to 8.0/day and reduces R₀ from 0.96 to 0.95 (a marginal reduction). However, the effect on 12-month endemic prevalence is modest (system prevalence 7.3% → 7.2%). This apparent paradox is explained by the admission colonisation forcing term: even when R₀ is reduced, the constant inflow of colonised patients $\alpha_i \mu_i N_i$ sustains a substantial endemic equilibrium. The sensitivity analysis (Section 6) confirms that hand hygiene (δ) is a strong driver of R₀ (PRCC = −0.96) but has only moderate independent influence on endemic prevalence (PRCC = −0.13 when other parameters, especially α, are simultaneously varied).
 
-**Scenario B (Admission Screening + Contact Precautions):** This scenario produces by far the largest reduction in endemic prevalence (system 7.3% → 1.0%), despite achieving only a modest R₀ reduction (1.36 → 1.16). The mechanism is the 80% reduction in admission colonisation ($\alpha_i \times 0.20$), which directly eliminates the primary forcing term driving endemic persistence. This is consistent with the theoretical result of Lipsitch et al. [1]: when most colonised individuals enter via admission rather than in-hospital transmission, reducing admission colonisation rate is more effective than reducing R₀. The sensitivity analysis confirms that α has the strongest PRCC with 12-month prevalence (0.87), while having negligible effect on R₀.
+**Scenario B (Admission Screening + Contact Precautions):** This scenario produces by far the largest reduction in endemic prevalence (system 7.3% → 1.0%), with a substantial R₀ reduction (0.96 → 0.70). The R₀ reduction occurs because reduced direct transmission (β × 0.70) lowers the transmission intensity, pushing R₀ further below 1. The mechanism is the 80% reduction in admission colonisation ($\alpha_i \times 0.20$), which directly eliminates the primary forcing term driving endemic persistence. This is consistent with the theoretical result of Lipsitch et al. [1]: when most colonised individuals enter via admission rather than in-hospital transmission, reducing admission colonisation rate is more effective than reducing R₀. The sensitivity analysis confirms that α has the strongest PRCC with 12-month prevalence (0.87), while having negligible effect on R₀.
 
-**Scenario C (Antibiotic Stewardship):** Reducing unnecessary antibiotic use by 30% restores the decolonisation rate $\gamma_i$ toward its base value, reducing system prevalence from 7.3% to 6.4% (a 12% reduction) and R₀ from 1.36 to 1.28. The effect is most pronounced in the ICU (15.6% → 12.3%), where antibiotic use is highest (80%) and the γ increase is therefore largest. This confirms that antibiotic stewardship is particularly valuable in high-intensity wards.
+**Scenario C (Antibiotic Stewardship):** Reducing unnecessary antibiotic use by 30% restores the decolonisation rate $\gamma_i$ toward its base value, reducing system prevalence from 7.3% to 6.4% (a 12% reduction) and R₀ from 0.96 to 0.90. The effect is most pronounced in the ICU (15.6% → 12.3%), where antibiotic use is highest (80%) and the γ increase is therefore largest. This confirms that antibiotic stewardship is particularly valuable in high-intensity wards.
 
-**Scenario D (Combined A + C):** The combined strategy achieves the lowest R₀ (1.15) and system prevalence (6.3%), marginally better than Scenario C alone (6.4%). The small additional benefit of Scenario A over C in the combined scenario reflects the finding from Scenario A: once the dominant forcing term (α) is not addressed, hand hygiene improvements have limited additive effect on prevalence. The combined D strategy does outperform all single interventions on R₀, suggesting it would be most effective at preventing epidemic amplification during an outbreak introduction.
+**Scenario D (Combined A + C):** The combined strategy achieves the lowest R₀ (0.88) and system prevalence (6.3%), marginally better than Scenario C alone (6.4%). However, Scenario D does **not** achieve the lowest system prevalence — Scenario B (1.0%) substantially outperforms it. This is because D does not address admission colonisation (α unchanged), so the constant forcing term continues to maintain a substantial endemic level even though R₀ is further reduced. Scenario D is best interpreted as the optimal strategy for minimising R₀ and epidemic amplification risk, not for minimising steady-state endemic prevalence.
 
 ### 5.4 Policy Recommendation
 
@@ -268,7 +270,7 @@ Our model assumes that every patient in ward $i$ is equally likely to contact an
 
 Ordinary differential equations treat state variables as continuous quantities. For the ICU with $N_{ICU} = 15$ beds, 10% colonisation corresponds to 1.5 patients — a quantity with no physical meaning. At low prevalence in small wards, stochastic fluctuations can cause extinction of the colonisation chain even when $R_0 > 1$ — the "stochastic fade-out" phenomenon well-documented in epidemic theory [5].
 
-*Effect on predictions:* Our deterministic model predicts that the ICU will always converge to its endemic equilibrium (15.6%) given $R_0 > 1$, with no possibility of spontaneous clearance. A stochastic Gillespie simulation would show that with $N = 15$ patients, there is a non-negligible probability of stochastic extinction even at $R_0 = 1.36$. The probability of extinction from a small initial infected population scales approximately as $(1/R_0)^I$ — for the ICU with $I = 1$ or 2 initial colonised patients, this implies substantial chance of a self-limiting outbreak. We therefore likely *overestimate* the inevitability of endemic colonisation in the ICU.
+*Effect on predictions:* Our deterministic model predicts that the ICU will always converge to its endemic equilibrium (15.6%), maintained by the admission colonisation forcing term. However, without the forcing term, our $R_0 = 0.96 < 1$ implies that transmission alone would die out. A stochastic Gillespie simulation would show that with $N = 15$ patients, random fluctuations could cause early extinction of colonisation events even when the admission forcing is present. We therefore may *overestimate* the smoothness of the ICU's endemic trajectory by ignoring discrete stochastic events.
 
 *What would address it:* A Gillespie exact stochastic simulation or $\tau$-leaping approximation for the ICU, coupled to deterministic equations for larger wards (GM, GS), would provide a hybrid model capturing stochastic effects where they matter most. This hybrid approach is computationally tractable for $N = 15$ and would produce probability distributions over outcomes rather than point estimates — a substantially more informative basis for decision-making in small, high-acuity wards.
 
@@ -326,13 +328,13 @@ This study developed and analysed a four-ward coupled compartmental model of ant
 
 **Key findings:**
 
-1. **Endemic persistence is established:** The system-level basic reproduction number R₀ = 1.36 exceeds the persistence threshold, confirming that AMR will remain endemic under baseline conditions. Critically, R₀ exceeds 1 only because of inter-ward coupling and HCW-mediated transmission — isolated single wards would not sustain endemic resistance, demonstrating the importance of network-level analysis.
+1. **Endemic persistence is driven by admission colonisation forcing:** The system-level basic reproduction number R₀ = 0.96 < 1, meaning intrinsic in-hospital transmission alone would not sustain AMR. Endemic persistence arises instead from the constant admission colonisation forcing term (α·μ·N), which continuously seeds colonised patients regardless of in-hospital transmission intensity. This finding has direct policy consequences: reducing R₀ further through hand hygiene or antibiotic stewardship cannot eliminate endemic AMR without simultaneously controlling admission colonisation.
 
 2. **Admission colonisation is the dominant driver of endemic prevalence:** Sensitivity analysis reveals that the admission colonisation rate α has the strongest PRCC with 12-month prevalence (0.87) while having negligible effect on R₀. This asymmetry means that R₀ alone is an incomplete guide to intervention priority.
 
 3. **Scenario B (admission screening) achieves the largest prevalence reduction:** Reducing admission colonisation by 80%, combined with 30% reduction in direct transmission, reduces system-wide prevalence from 7.3% to 1.0%. This dramatically outperforms interventions targeting only in-hospital transmission (Scenarios A and C).
 
-4. **Combined Scenario D achieves the lowest R₀:** The combined hand hygiene + antibiotic stewardship strategy (R₀ = 1.15) best reduces the risk of epidemic amplification during outbreak events, even though its effect on endemic prevalence is modest relative to Scenario B.
+4. **Combined Scenario D achieves the lowest R₀:** The combined hand hygiene + antibiotic stewardship strategy (R₀ = 0.88) best reduces the risk of epidemic amplification during outbreak events, even though its effect on endemic prevalence (6.3%) is far inferior to Scenario B (1.0%) because it does not address the admission colonisation forcing term.
 
 **Policy recommendation to the hospital board:** Implement universal admission screening and contact precautions (Scenario B) as the primary intervention for reducing endemic AMR burden, supplemented by antibiotic stewardship (Scenario C) for sustained management of antibiotic selection pressure. Hand hygiene improvement (Scenario A) should be maintained as a baseline standard given its structural effect on R₀ and its low implementation cost. The combined A+C strategy (Scenario D) is recommended for periods of elevated outbreak risk.
 
@@ -346,6 +348,6 @@ This study developed and analysed a four-ward coupled compartmental model of ant
 
 1. Lipsitch M, Bergstrom CT, Levin BR. The epidemiology of antibiotic resistance in hospitals: paradoxes and prescriptions. *PNAS* 2000;97:1938–1943.
 2. Webb GF, D'Agata EMC, Magal P, Ruan S. A model of antibiotic-resistant bacterial epidemics in hospitals. *PNAS* 2005;102:13343–13348.
-3. Bootsma MCJ, Bonten MJM, Nijssen S, Fluit AC, Diekmann O. An algorithm to estimate the importance of bacterial acquisition routes in hospital settings. *Am J Epidemiol* (preprint).
+3. Bootsma MCJ, Bonten MJM, Nijssen S, Fluit AC, Diekmann O. An algorithm to estimate the importance of bacterial acquisition routes in hospital settings. *Am J Epidemiol* 2006;164:1038–1047.
 4. D'Agata EMC, Magal P, Olivier D, Ruan S, Webb GF. Modeling antibiotic resistance in hospitals: the impact of minimizing treatment duration. *J Theor Biol* 2007;249:487–499.
 5. Diekmann O, Heesterbeek JAP, Metz JAJ. On the definition and the computation of the basic reproduction ratio R0 in models for infectious diseases in heterogeneous populations. *J Math Biol* 1990;28:365–382.
