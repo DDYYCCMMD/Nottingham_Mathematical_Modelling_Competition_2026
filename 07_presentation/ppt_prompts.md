@@ -71,7 +71,7 @@ Slide 7 – Sensitivity Analysis
 Title: R₀ vs Prevalence — Different Drivers
 Insert image placeholder labeled "Figure 3: sensitivity.png"
 Two-column comparison:
-Left: "Strongest drivers of R₀" → β (+0.97), δ hand hygiene (−0.96), γ (−0.92)
+Left: "Strongest drivers of R₀" → β (+0.99), γ (−0.97), δ hand hygiene (−0.49)
 Right: "Strongest drivers of Prevalence" → β (+0.94), α admission rate (+0.87), γ (−0.86)
 Key insight box: "α (admission rate) has PRCC ≈ 0 for R₀ but +0.87 for prevalence → R₀ alone gives wrong intervention priority"
 
@@ -180,10 +180,10 @@ Style: data-focused, clear visual hierarchy, highlight the key finding.
 Design a sensitivity analysis results slide for a mathematical biology presentation.
 Title: "R₀ and Prevalence Have Different Drivers"
 Left panel: vertical bar chart or list showing PRCC vs R₀:
-β transmission: +0.97 (dark green bar)
-δ hand hygiene: -0.96 (dark red bar)  
-γ decolonisation: -0.92 (red bar)
-α admission: -0.02 (barely visible, grey)
+β transmission: +0.99 (dark green bar)
+γ decolonisation: -0.97 (dark red bar)
+δ hand hygiene: -0.49 (medium red bar)
+α admission: -0.03 (barely visible, grey)
 Right panel: vertical bar chart showing PRCC vs 12-month prevalence:
 β transmission: +0.94 (green)
 α admission: +0.87 (dark green — prominent)

@@ -317,7 +317,7 @@ Four intervention scenarios were simulated over a 12-month horizon. Each scenari
 
 \subsection{Interpretation}
 
-\textbf{Scenario A (Hand Hygiene 80\%):} Raising hand hygiene compliance from 50\% to 80\% increases the HCW decontamination rate $\delta$ from 5.0 to 8.0/day and reduces $R_0$ from 0.96 to 0.95 (a marginal reduction). However, the effect on 12-month endemic prevalence is modest (system prevalence 7.3\% $\to$ 7.2\%). This apparent paradox is explained by the admission colonisation forcing term: even when $R_0$ is reduced, the constant inflow of colonised patients $\alpha_i \mu_i N_i$ sustains a substantial endemic equilibrium. The sensitivity analysis (Section 6) confirms that hand hygiene ($\delta$) is a strong driver of $R_0$ (PRCC = $-0.96$) but has only moderate independent influence on endemic prevalence (PRCC = $-0.13$ when other parameters, especially $\alpha$, are simultaneously varied).
+\textbf{Scenario A (Hand Hygiene 80\%):} Raising hand hygiene compliance from 50\% to 80\% increases the HCW decontamination rate $\delta$ from 5.0 to 8.0/day and reduces $R_0$ from 0.96 to 0.95 (a marginal reduction). However, the effect on 12-month endemic prevalence is modest (system prevalence 7.3\% $\to$ 7.2\%). This apparent paradox is explained by the admission colonisation forcing term: even when $R_0$ is reduced, the constant inflow of colonised patients $\alpha_i \mu_i N_i$ sustains a substantial endemic equilibrium. The sensitivity analysis (Section 6) confirms that hand hygiene ($\delta$) has moderate influence on $R_0$ (PRCC = $-0.49$) and only limited independent influence on endemic prevalence (PRCC = $-0.13$ when other parameters, especially $\alpha$, are simultaneously varied).
 
 \textbf{Scenario B (Admission Screening + Contact Precautions):} This scenario produces by far the largest reduction in endemic prevalence (system 7.3\% $\to$ 1.0\%), with a substantial $R_0$ reduction (0.96 $\to$ 0.70). The $R_0$ reduction occurs because reduced direct transmission ($\beta \times 0.70$) lowers transmission intensity, pushing $R_0$ further below 1. The mechanism is the 80\% reduction in admission colonisation ($\alpha_i \times 0.20$), which directly eliminates the primary forcing term driving endemic persistence. This is consistent with the theoretical result of Lipsitch et al. \cite{lipsitch2000}: when most colonised individuals enter via admission rather than in-hospital transmission, reducing admission colonisation rate is more effective than reducing $R_0$. The sensitivity analysis confirms that $\alpha$ has the strongest PRCC with 12-month prevalence (0.87), while having negligible effect on $R_0$.
 
@@ -385,17 +385,17 @@ PRCC is computed by partial regression on ranked values, isolating the contribut
     \toprule
     Parameter & PRCC vs $R_0$ & PRCC vs 12-month Prevalence \\
     \midrule
-    $\beta$ (transmission) & \textbf{+0.967} & +0.936 \\
-    $\gamma$ (decolonisation) & \textbf{$-0.915$} & $-0.860$ \\
-    $\delta$ (hand hygiene) & \textbf{$-0.957$} & $-0.134$ \\
-    $\alpha$ (admission rate) & $-0.018 \approx 0$ & \textbf{+0.873} \\
+    $\beta$ (transmission) & \textbf{+0.993} & +0.936 \\
+    $\gamma$ (decolonisation) & \textbf{$-0.968$} & $-0.860$ \\
+    $\delta$ (hand hygiene) & $-0.493$ & $-0.134$ \\
+    $\alpha$ (admission rate) & $-0.026 \approx 0$ & \textbf{+0.873} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \subsection{Interpretation}
 
-\textbf{$R_0$ sensitivity:} The three parameters $\beta$, $\gamma$, and $\delta$ all show strong PRCC magnitudes ($|\mathrm{PRCC}| > 0.9$) with $R_0$. This reflects their direct mechanistic roles: $\beta$ drives new colonisations, $\gamma$ drives recovery, and $\delta$ drives HCW decontamination. The admission colonisation rate $\alpha$ has negligible PRCC with $R_0$ ($-0.018$), as expected: $R_0$ is computed at the disease-free equilibrium where $\alpha$ is formally set to zero, so $\alpha$ does not enter the NGM calculation.
+\textbf{$R_0$ sensitivity:} $\beta$ ($+0.993$) and $\gamma$ ($-0.968$) dominate $R_0$ sensitivity, reflecting their direct roles in new colonisations and recovery. The hand hygiene parameter $\delta$ has moderate PRCC ($-0.493$), consistent with the corrected NGM: after fixing the HCW contamination entry to $\eta/N$, the HCW transmission pathway contributes less to $R_0$, so $\delta$ has weaker leverage. The admission colonisation rate $\alpha$ has negligible PRCC with $R_0$ ($-0.026$), as expected: $R_0$ is computed at the disease-free equilibrium where $\alpha$ is formally set to zero, so $\alpha$ does not enter the NGM calculation.
 
 \textbf{Prevalence sensitivity:} The ranking changes substantially for 12-month prevalence. The dominant factors are $\beta$ (+0.936) and $\alpha$ (+0.873), while $\delta$ drops to $-0.134$. This reveals a critical asymmetry: hand hygiene compliance ($\delta$) strongly reduces $R_0$ but has limited independent effect on steady-state prevalence, because endemic prevalence is sustained by the admission colonisation forcing term regardless of transmission intensity. Conversely, $\alpha$ has almost no effect on $R_0$ but dominates the prevalence outcome.
 
