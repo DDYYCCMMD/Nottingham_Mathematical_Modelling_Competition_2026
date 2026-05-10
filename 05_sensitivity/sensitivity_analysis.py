@@ -8,7 +8,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import solve_ivp
-from scipy.stats import rankdata, spearmanr
+from scipy.stats import rankdata
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "03_simulation"))
 import parameters
@@ -66,28 +66,28 @@ def latin_hypercube_sample(n_samples: int, bounds: list, seed: int = 42) -> np.n
 
 
 def compute_prcc(X: np.ndarray, Y: np.ndarray) -> np.ndarray:
-    """Compute parameter-wise PRCC values using residual rank correlations."""
+    """Compute parameter-wise PRCC values from regressions on ranked variables."""
     n_samples, n_params = X.shape
     if Y.shape[0] != n_samples:
         raise ValueError("X and Y must contain the same number of samples.")
 
+    ranked_X = np.apply_along_axis(rankdata, 0, X)
+    ranked_Y = rankdata(Y)
     prcc_values = np.zeros(n_params)
     intercept = np.ones((n_samples, 1))
 
     for j in range(n_params):
         other_indices = [k for k in range(n_params) if k != j]
-        regressors = X[:, other_indices]
+        regressors = ranked_X[:, other_indices]
         design_matrix = np.hstack([intercept, regressors])
 
-        y_coefficients, _, _, _ = np.linalg.lstsq(design_matrix, Y, rcond=None)
-        y_residual = Y - design_matrix @ y_coefficients
+        y_coefficients, _, _, _ = np.linalg.lstsq(design_matrix, ranked_Y, rcond=None)
+        y_residual = ranked_Y - design_matrix @ y_coefficients
 
-        xj_coefficients, _, _, _ = np.linalg.lstsq(design_matrix, X[:, j], rcond=None)
-        xj_residual = X[:, j] - design_matrix @ xj_coefficients
+        xj_coefficients, _, _, _ = np.linalg.lstsq(design_matrix, ranked_X[:, j], rcond=None)
+        xj_residual = ranked_X[:, j] - design_matrix @ xj_coefficients
 
-        ranked_y_residual = rankdata(y_residual)
-        ranked_xj_residual = rankdata(xj_residual)
-        prcc_values[j] = spearmanr(ranked_xj_residual, ranked_y_residual).statistic
+        prcc_values[j] = np.corrcoef(xj_residual, y_residual)[0, 1]
 
     return prcc_values
 

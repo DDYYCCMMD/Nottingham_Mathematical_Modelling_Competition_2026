@@ -44,3 +44,10 @@ env/
 # ── Duplicate figure copies created by Codex (figures live in 03_simulation/figures/) ──
 04_intervention/03_simulation/
 05_sensitivity/03_simulation/
+
+# ── Internal planning docs (not submission material) ─────────────────────
+docs/superpowers/
+AGENTS.md
+
+# ── Empty placeholder files (superseded by real content) ─────────────────
+*.gitkeep

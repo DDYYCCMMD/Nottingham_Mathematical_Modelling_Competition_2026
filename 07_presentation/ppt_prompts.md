@@ -42,7 +42,7 @@ Large centered number: R₀ = 0.96
 Formula box: R₀ = ρ(F·V⁻¹) where ρ = spectral radius
 Two key insights:
 "R₀ < 1 → in-hospital transmission alone cannot sustain AMR"
-"Endemic persistence is driven by admission colonisation forcing (α·μ·N) — eliminating this is the necessary condition for eradication (Scenario B)"
+"Endemic persistence is driven by admission colonisation forcing (α·μ·N) — near-eliminating this is necessary for eradication, and Scenario B moves strongly in that direction by reducing α by 80%"
 
 Slide 5 – Baseline Simulation
 Title: 12-Month Colonisation Dynamics
@@ -65,15 +65,15 @@ A: Hand Hygiene 80% | 0.95 | 7.2%
 B: Admission Screening | 0.70 | 1.0% ← HIGHLIGHT THIS ROW in green
 C: Antibiotic Stewardship | 0.90 | 6.4%
 D: Combined A+C | 0.88 | 6.3%
-Callout: "Scenario B: 86% prevalence reduction — eliminates the admission colonisation forcing term"
+Callout: "Scenario B: 86% prevalence reduction — simultaneously reduces admission colonisation by 80% and direct transmission by 30%"
 
 Slide 7 – Sensitivity Analysis
 Title: R₀ vs Prevalence — Different Drivers
 Insert image placeholder labeled "Figure 3: sensitivity.png"
 Two-column comparison:
-Left: "Strongest drivers of R₀" → β (+0.99), γ (−0.97), δ hand hygiene (−0.49)
+Left: "Strongest drivers of R₀" → β (+0.99), γ (−0.96), δ hand hygiene (−0.52)
 Right: "Strongest drivers of Prevalence" → β (+0.95), α admission rate (+0.92), γ (−0.88)
-Key insight box: "α has PRCC ≈ 0 for R₀ but +0.92 for prevalence; β dominates both → Scenario B targets the two top prevalence drivers simultaneously"
+Key insight box: "α has PRCC ≈ 0 for R₀ but +0.92 for prevalence; β and α jointly dominate endemic prevalence → Scenario B targets both simultaneously"
 
 Slide 8 – Critical Evaluation
 Title: Honest Model Assessment
@@ -139,7 +139,7 @@ Center: a very large bold number "R₀ = 0.96" in navy blue, font size equivalen
 Below it: the formula "R₀ = ρ(F · V⁻¹)" in a light grey formula box
 Two insight bullet points:
 • "R₀ < 1 → in-hospital transmission alone cannot sustain AMR"  
-• "Endemic persistence driven by admission colonisation forcing (α·μ·N) — Scenario B eliminates this"
+• "Endemic persistence driven by admission colonisation forcing (α·μ·N) — Scenario B strongly attenuates this by reducing α by 80%"
 Visual accent: a subtle threshold line graphic showing 1.0, with R₀ = 0.96 marked below it.
 Style: minimalist white slide, single focal point on the number, academic typography.
 ```
@@ -181,9 +181,9 @@ Design a sensitivity analysis results slide for a mathematical biology presentat
 Title: "R₀ and Prevalence Have Different Drivers"
 Left panel: vertical bar chart or list showing PRCC vs R₀:
 β transmission: +0.99 (dark green bar)
-γ decolonisation: -0.97 (dark red bar)
-δ hand hygiene: -0.49 (medium red bar)
-α admission: -0.03 (barely visible, grey)
+γ decolonisation: -0.96 (dark red bar)
+δ hand hygiene: -0.52 (medium red bar)
+α admission: -0.02 (barely visible, grey)
 Right panel: vertical bar chart showing PRCC vs 12-month prevalence:
 β transmission: +0.95 (green)
 α admission: +0.92 (dark green — prominent)
@@ -225,7 +225,7 @@ Title: "Recommendation to the Hospital Board"
 Three stacked action items with priority color coding:
 🔴 IMMEDIATE PRIORITY (red left border):
 "Universal admission screening + contact precautions"
-"Result: system prevalence 7.3% → 1.0% (86% reduction)"
+"Result: system prevalence 7.3% → 1.0% (86% reduction), by reducing both α and β"
 
 🟡 MEDIUM-TERM (amber left border):
 "Antibiotic stewardship programme (−30% unnecessary use)"

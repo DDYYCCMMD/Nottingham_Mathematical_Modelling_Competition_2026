@@ -107,9 +107,12 @@ def compute_R0(params):
     F[patient_indices, hcw_indices] = params["lambda_hcw"] * params["N"]
     F[hcw_indices, patient_indices] = params["eta"] / params["N"]  # H_i is a fraction; linearise dH_i/dt at DFE gives eta_i/N_i per colonised patient
 
-    V[patient_indices, patient_indices] = (
+    V[np.ix_(patient_indices, patient_indices)] = np.diag(
         params["gamma"] + params["mu"] + np.sum(params["T"], axis=1)
     )
+    # Inter-ward transfers move colonised patients between infected compartments,
+    # so they belong in V as state transitions rather than in F as new infections.
+    V[np.ix_(patient_indices, patient_indices)] -= params["T"].T
     V[hcw_indices, hcw_indices] = params["delta"]
 
     next_generation_matrix = F @ np.linalg.inv(V)
