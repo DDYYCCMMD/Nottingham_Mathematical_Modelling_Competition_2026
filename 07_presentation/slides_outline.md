@@ -97,10 +97,10 @@ dH_i/dt = η_i(C_i/N_i)(1−H_i) − δ_i H_i
 
 **Visuals:**
 - Figure 3: Two-panel tornado plot (PRCC for R₀ and prevalence side by side)
-- Callout box: "δ: strong for R₀, weak for prevalence. α: negligible for R₀, dominant for prevalence."
+- Callout box: "δ: moderate for R₀ (−0.52), weak for prevalence (−0.14). α: negligible for R₀ (−0.02), strong for prevalence (+0.92). β dominates both."
 
 **Script:**
-> "PRCC analysis reveals a critical asymmetry: hand hygiene compliance strongly affects R₀ but has limited independent effect on endemic prevalence once admission colonisation is accounted for. Conversely, admission colonisation rate α has essentially no effect on R₀ — because R₀ is a disease-free equilibrium quantity — but is the strongest single driver of endemic prevalence. This means R₀ alone is a misleading guide to intervention priority."
+> "PRCC analysis reveals a critical asymmetry. For R₀, β (+0.99) and γ (−0.96) dominate, while δ has moderate influence (−0.52) and α is negligible. For 12-month prevalence, β (+0.95) and α (+0.92) jointly dominate — admission colonisation rate α leaps from irrelevant to the second strongest driver. This means a hospital using R₀ to prioritise interventions would invest in hand hygiene and antibiotic stewardship while under-investing in admission screening — exactly backwards for reducing endemic prevalence. Scenario B is optimal precisely because it simultaneously targets both top prevalence drivers: β through contact precautions and α through admission screening."
 
 ---
 

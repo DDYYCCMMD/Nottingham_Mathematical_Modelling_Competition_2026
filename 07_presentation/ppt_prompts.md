@@ -72,8 +72,8 @@ Title: R₀ vs Prevalence — Different Drivers
 Insert image placeholder labeled "Figure 3: sensitivity.png"
 Two-column comparison:
 Left: "Strongest drivers of R₀" → β (+0.99), γ (−0.97), δ hand hygiene (−0.49)
-Right: "Strongest drivers of Prevalence" → β (+0.94), α admission rate (+0.87), γ (−0.86)
-Key insight box: "α (admission rate) has PRCC ≈ 0 for R₀ but +0.87 for prevalence → R₀ alone gives wrong intervention priority"
+Right: "Strongest drivers of Prevalence" → β (+0.95), α admission rate (+0.92), γ (−0.88)
+Key insight box: "α has PRCC ≈ 0 for R₀ but +0.92 for prevalence; β dominates both → Scenario B targets the two top prevalence drivers simultaneously"
 
 Slide 8 – Critical Evaluation
 Title: Honest Model Assessment
@@ -166,11 +166,11 @@ Title: "Intervention Scenario Comparison"
 Top half: image placeholder box labeled "[Figure 2: 5-scenario colonisation comparison]"
 Bottom half: a 5-row comparison table:
 Scenario | R₀ | System Prevalence
-Baseline | 1.36 | 7.3%
-A: Hand Hygiene | 1.23 | 7.2%
-B: Admission Screening | 1.16 | 1.0% ← highlight this row with green background
-C: Antibiotic Stewardship | 1.28 | 6.4%
-D: Combined A+C | 1.15 | 6.3%
+Baseline | 0.96 | 7.3%
+A: Hand Hygiene | 0.95 | 7.2%
+B: Admission Screening | 0.70 | 1.0% ← highlight this row with green background
+C: Antibiotic Stewardship | 0.90 | 6.4%
+D: Combined A+C | 0.88 | 6.3%
 Right side callout box in green: "Scenario B: 86% prevalence reduction"
 Style: data-focused, clear visual hierarchy, highlight the key finding.
 ```
@@ -185,11 +185,11 @@ Left panel: vertical bar chart or list showing PRCC vs R₀:
 δ hand hygiene: -0.49 (medium red bar)
 α admission: -0.03 (barely visible, grey)
 Right panel: vertical bar chart showing PRCC vs 12-month prevalence:
-β transmission: +0.94 (green)
-α admission: +0.87 (dark green — prominent)
-γ decolonisation: -0.86 (red)
-δ hand hygiene: -0.13 (light red — small)
-Center callout box: "Key asymmetry: α irrelevant for R₀ but dominates prevalence"
+β transmission: +0.95 (green)
+α admission: +0.92 (dark green — prominent)
+γ decolonisation: -0.88 (red)
+δ hand hygiene: -0.14 (light red — small)
+Center callout box: "Key asymmetry: α negligible for R₀ but +0.92 for prevalence → β and α jointly dominate"
 Style: two symmetric panels, PRCC scale -1 to +1, color-coded bars.
 ```
 

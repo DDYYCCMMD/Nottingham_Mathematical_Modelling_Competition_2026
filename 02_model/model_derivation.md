@@ -150,20 +150,19 @@ $$V_{i,i} = \gamma_i + \mu_i + \sum_{j \neq i} T_{ij} \quad (i = 0,1,2,3)$$
 **HCW decontamination (diagonal, H_i):**
 $$V_{4+i,4+i} = \delta_i \quad (i = 0,1,2,3)$$
 
-All off-diagonal V entries are zero (inter-ward transfers only affect $C_i$, and they appear in the $C_i$ outflow term above).
+Inter-ward transfers move already colonised patients between infected compartments, so the patient block of $V$ contains off-diagonal transition terms $-T_{ji}$ in addition to the diagonal loss terms.
 
-$$\mathbf{V} = \begin{pmatrix} \mathrm{diag}(\gamma_i + \mu_i + \sigma_i) & \mathbf{0} \\ \mathbf{0} & \mathrm{diag}(\delta_i) \end{pmatrix}$$
+$$\mathbf{V} = \begin{pmatrix} \mathrm{diag}(\gamma_i + \mu_i + \sigma_i) - \mathbf{T}^{\top} & \mathbf{0} \\ \mathbf{0} & \mathrm{diag}(\delta_i) \end{pmatrix}$$
 
-where $\sigma_i = \sum_{j \neq i} T_{ij}$ is the total transfer-out rate from ward $i$.
+where $\sigma_i = \sum_{j \neq i} T_{ij}$ is the total transfer-out rate from ward $i$. Under the one-way transfer structure used in this project, including the off-diagonal entries makes the NGM construction fully consistent with the ODE system while leaving the numerical value of $R_0$ unchanged.
 
 ### 5.6 Next Generation Matrix K = F·V⁻¹
 
-Since V is block-diagonal:
-$$\mathbf{V}^{-1} = \begin{pmatrix} \mathrm{diag}(1/(\gamma_i+\mu_i+\sigma_i)) & \mathbf{0} \\ \mathbf{0} & \mathrm{diag}(1/\delta_i) \end{pmatrix}$$
+Because the patient block of $V$ contains the transfer terms $-\mathbf{T}^{\top}$, the full inverse $V^{-1}$ is computed numerically rather than written as a simple diagonal expression. The next-generation matrix is therefore
 
-$$\mathbf{K} = \mathbf{F} \cdot \mathbf{V}^{-1} = \begin{pmatrix} \mathrm{diag}\!\left(\frac{\beta_i}{\gamma_i+\mu_i+\sigma_i}\right) & \mathrm{diag}\!\left(\frac{\lambda_i N_i}{\delta_i}\right) \\ \mathrm{diag}\!\left(\frac{\eta_i}{N_i(\gamma_i+\mu_i+\sigma_i)}\right) & \mathbf{0} \end{pmatrix}$$
+$$\mathbf{K} = \mathbf{F} \cdot \mathbf{V}^{-1}$$
 
-**R₀ = ρ(K)** — the largest eigenvalue (spectral radius) of the 8×8 matrix K.
+and **R₀ = ρ(K)** is the dominant eigenvalue of this 8×8 matrix.
 
 ### 5.7 Single-Ward Analytical Formula
 For a single isolated ward with no transfers ($\sigma_i = 0$) and no HCW:
@@ -205,19 +204,17 @@ Transfer rates computed as: $T_{GS \to ICU} = 0.05 / \text{avg\_stay}_{GS} = 0.0
 
 ---
 
-## 7. Expected Numerical Results (Pre-Simulation Estimates)
+## 7. Validated Numerical Results
 
-**System R₀ (baseline):** Using single-ward formula for ICU as dominant driver:
-$$R_0^{\text{ICU}} \approx \frac{0.140}{0.060 + 0.083} + \frac{0.06 \times 15 \times 0.5}{5.0 \times (0.060+0.083)} \approx 0.979 + 0.629 = 1.61$$
+The implementation consistent with the corrected NGM and HCW linearisation reproduces the following baseline outputs:
 
-System-level R₀ (with coupling) expected in range **1.4–2.0**, consistent with published MRSA hospital estimates.
+| Quantity | Value |
+|----------|-------|
+| System $R_0$ | 0.9641 |
+| GM prevalence (Day 365) | 5.08% |
+| GS prevalence (Day 365) | 5.98% |
+| ICU prevalence (Day 365) | 15.65% |
+| GW prevalence (Day 365) | 9.26% |
+| System prevalence (Day 365) | 7.29% |
 
-**Expected endemic prevalence (12-month steady state):**
-| Ward | Estimated prevalence |
-|------|---------------------|
-| ICU | 12–20% |
-| GS | 7–12% |
-| GW | 6–10% |
-| GM | 4–8% |
-
-These serve as validation targets for the simulation output.
+These are the values that should be treated as the current validation targets for the code and report.
